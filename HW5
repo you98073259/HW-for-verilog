@@ -1,0 +1,27 @@
+module adder_or_substract(
+a,b,op,s,f
+);                                  
+parameter SIZE=8;
+parameter SIZE1=9;
+parameter ADD =1'b1;
+input op;
+input signed [SIZE-1:0] a,b;
+output reg [SIZE-1:0] s;            //s為a+b或a-b的結果
+output reg f;
+wire overflow;
+wire [SIZE-1:0] w1,w2,w3;
+assign w2=a;
+assign w3=b; 
+assign w1=(op==ADD) ? w2+w3 : w2-w3;
+assign overflow= (~s[7]&a[7]&b[7])|(s[7]&(~a[7])&(~b[7]));   //判斷有沒有溢位
+
+
+always @(*)
+begin
+s=w1;  
+if (overflow==1)
+   f=1;
+else
+   f=0;
+end
+endmodule
